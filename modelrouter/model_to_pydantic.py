@@ -1,0 +1,47 @@
+from typing import Container, Optional, Type, Any
+
+from pydantic import BaseConfig, BaseModel, create_model
+from sqlalchemy.inspection import inspect
+
+
+class OrmConfig(BaseConfig):
+    orm_mode = True
+
+
+def model_to_pydantic(
+        model: Type,
+        *,
+        name: str = '',
+        exclude: Container[str] = (),
+        only: Container[str] = (),
+        only_pk: bool = False,
+        exclude_pk: bool = False,
+        force_optional=False
+
+) -> Type[BaseModel]:
+    mapper: Any = inspect(model)
+    fields = {}
+    for column in mapper.columns:
+        if exclude and column.name in exclude:
+            continue
+        if only and column.name not in only:
+            continue
+        if only_pk and not column.primary_key:
+            continue
+        if exclude_pk and column.primary_key:
+            continue
+        python_type: Optional[type] = None
+        if hasattr(column.type, "impl"):
+            if hasattr(column.type.impl, "python_type"):
+                python_type = column.type.impl.python_type
+        elif hasattr(column.type, "python_type"):
+            python_type = column.type.python_type
+        assert python_type, f"Could not infer python_type for {column}"
+        default = None
+        if not force_optional:
+            if column.default is None and not column.nullable:
+                default = ...
+        fields[column.name] = (python_type, default)
+    basemodel_name = name if name != '' else model.__name__
+    basemodel: Type[BaseModel] = create_model(basemodel_name, __config__=OrmConfig, **fields)  # type: ignore
+    return basemodel
