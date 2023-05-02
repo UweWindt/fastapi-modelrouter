@@ -19,6 +19,19 @@ def model_to_pydantic(
         force_optional=False
 
 ) -> Type[BaseModel]:
+    """
+
+        Args:
+            model: SqlAlchemy model
+            name:  Optional: if name=="" the name of the Model will used
+            exclude: List of fields that are excluded
+            only:    List of fields
+            only_pk: if True generates Schema only for primary key fields
+            exclude_pk: If True generate Schema for non pk fields
+            force_optional: Make all fields optional
+        Returns:
+           Pydantic BaseModel
+        """
     mapper: Any = inspect(model)
     fields = {}
     for column in mapper.columns:
