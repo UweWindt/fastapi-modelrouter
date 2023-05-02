@@ -6,4 +6,10 @@
 - Simple to Use
 - composite primary key
 
-Under developement
+### Under development
+
+### Todo's
+- modelrouter Tests
+- Example
+- Documentation
+- pip package

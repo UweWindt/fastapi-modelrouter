@@ -34,6 +34,19 @@ class ModelRouter(APIRouter):
             delete_one_route: bool = True,
             **kwargs: Any
     ) -> None:
+        """
+
+        :param db_model:
+        :param db:
+        :param prefix:
+        :param tags:
+        :param get_all_route:
+        :param get_one_route:
+        :param create_route:
+        :param update_route:
+        :param delete_one_route:
+        :param kwargs:
+        """
         self.db_model: Type[Model] = db_model
         self.db: CALLABLE_SESSION = db
         self.schema: Type[BaseModel] = model_to_pydantic(db_model)
@@ -58,7 +71,7 @@ class ModelRouter(APIRouter):
                 methods=["GET"],
                 response_model=Optional[List[self.schema]],  # type: ignore
                 summary="Get All",
-                dependencies=get_all_route,
+                #dependencies=get_all_route,
             )
 
         if get_one_route:
@@ -68,7 +81,7 @@ class ModelRouter(APIRouter):
                 methods=["GET"],
                 response_model=self.schema,
                 summary="Get One",
-                dependencies=get_one_route,
+                #dependencies=get_one_route,
                 error_responses=[NOT_FOUND],
             )
 
@@ -79,7 +92,7 @@ class ModelRouter(APIRouter):
                 methods=["POST"],
                 response_model=self.schema,
                 summary="Create One",
-                dependencies=create_route,
+                #dependencies=create_route,
             )
 
         if update_route:
@@ -89,7 +102,7 @@ class ModelRouter(APIRouter):
                 methods=["PUT"],
                 response_model=self.schema,
                 summary="Update One",
-                dependencies=update_route,
+                #dependencies=update_route,
                 error_responses=[NOT_FOUND],
             )
 
@@ -100,7 +113,7 @@ class ModelRouter(APIRouter):
                 methods=["DELETE"],
                 response_model=self.schema,
                 summary="Delete One",
-                dependencies=delete_one_route,
+                #dependencies=delete_one_route,
                 error_responses=[NOT_FOUND],
             )
 
@@ -118,11 +131,9 @@ class ModelRouter(APIRouter):
             self,
             path: str,
             endpoint: Callable[..., Any],
-            dependencies: Union[bool, DEPENDENCIES],
             error_responses: Optional[List[HTTPException]] = None,
             **kwargs: Any,
     ) -> None:
-        dependencies = [] if isinstance(dependencies, bool) else dependencies
         responses: Any = (
             {err.status_code: {"detail": err.detail} for err in error_responses}
             if error_responses
@@ -130,7 +141,11 @@ class ModelRouter(APIRouter):
         )
 
         super().add_api_route(
-            path, endpoint, dependencies=dependencies, responses=responses, **kwargs
+            path,
+            endpoint,
+            # dependencies=dependencies,
+            responses=responses,
+            **kwargs
         )
 
     def get(
