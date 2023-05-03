@@ -1,11 +1,13 @@
 from fastapi.testclient import TestClient
-from .setup_app import setup_app,Project,get_db
+
 from modelrouter.modelrouter import ModelRouter
+from .setup_app import setup_app, Project, get_db
+
 app = setup_app()
 
-
-app.include_router(ModelRouter(Project,get_db,prefix="/project",))
+app.include_router(ModelRouter(Project, get_db, prefix="/project", ))
 client = TestClient(app)
+
 
 def test_get_project():
     response = client.get("/project")
@@ -27,16 +29,16 @@ def test_post_project():
     assert response.status_code == 200, response.text
     data = response.json()
     assert data["projectno"] == "alpha"
-    assert data["project"] == None
-    assert data["owner"] == None
+    assert data["project"] is None
+    assert data["owner"] is None
 
 
 def test_get_one_project():
     response = client.get("/project/alpha")
     data = response.json()
     assert data["projectno"] == "alpha"
-    assert data["project"] == None
-    assert data["owner"] == None
+    assert data["project"] is None
+    assert data["owner"] is None
 
 
 def test_put_project():
@@ -68,5 +70,3 @@ def test_delete_project():
     data = response.json()
     assert data["projectno"] == "alpha"
     assert data["project"] == "123"
-
-
