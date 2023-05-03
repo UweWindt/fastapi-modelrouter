@@ -22,8 +22,4 @@ app.include_router(router)
 
 ### Under development
 
-### Todo's
-- modelrouter Tests
-- Example
-- Documentation
-- pip package
+
