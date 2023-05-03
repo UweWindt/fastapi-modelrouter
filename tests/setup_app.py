@@ -1,11 +1,9 @@
-from fastapi import FastAPI
+
 from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 
-def setup_app():
-    app = FastAPI()
-    return app
+
 
 
 sqlalchemy_database_url = "sqlite:///test.db"

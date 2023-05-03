@@ -1,11 +1,13 @@
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from modelrouter.modelrouter import ModelRouter
-from .setup_app import setup_app, Project, get_db
+from .setup_app import Project, get_db
 
-app = setup_app()
+app = FastAPI()
 
 app.include_router(ModelRouter(Project, get_db, prefix="/project", ))
+
 client = TestClient(app)
 
 
