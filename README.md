@@ -1,15 +1,12 @@
-# fastapi-modelrouter
+# fastAPI-modelrouter
 
-## create fastAPI Router from a SqlAlchemy model
-
+## create fastAPI CRUD route from SqlAlchemy model
 
 ### Usage
-
 ```
 app = FastAPI()
-
-app.include_router(ModelRouter(Project, get_db, prefix="/project", ))
-
+router=ModelRouter(Project, get_db, prefix="/project")
+app.include_router(router)
 ```
 
 
