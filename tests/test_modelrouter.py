@@ -1,26 +1,72 @@
-from sqlalchemy import Column, String, create_engine
-from sqlalchemy.orm import Session, sessionmaker
-from sqlalchemy.orm import declarative_base
-
-Base = declarative_base()
-
-engine = create_engine("sqlite://", echo=True)
+from fastapi.testclient import TestClient
+from .setup_app import setup_app,Project,get_db
+from modelrouter.modelrouter import ModelRouter
+app = setup_app()
 
 
-class Part(Base):
-    __tablename__ = 'part'
-    partno = Column(String, primary_key=True)
-    partname = Column(String)
-    specification = Column(String)
+app.include_router(ModelRouter(Project,get_db,prefix="/project",))
+client = TestClient(app)
+
+def test_get_project():
+    response = client.get("/project")
+    assert response.status_code == 200
+    assert response.json() == []
 
 
-Base.metadata.create_all(engine)
-LocalSession = sessionmaker(bind=engine)
-db: Session = LocalSession()
-part = Part(partno="001", partname="Bold", specification="Alpha 1")
-db.add(part)
-db.commit()
+def test_get_one_project_not_found():
+    response = client.get("/project/alpha")
+    assert response.status_code == 404
+    assert response.json() == {'detail': 'Item not found'}
 
 
-def test_simple():
-    assert 2 == 2
+def test_post_project():
+    response = client.post(
+        "/project",
+        json={"projectno": "alpha"}
+    )
+    assert response.status_code == 200, response.text
+    data = response.json()
+    assert data["projectno"] == "alpha"
+    assert data["project"] == None
+    assert data["owner"] == None
+
+
+def test_get_one_project():
+    response = client.get("/project/alpha")
+    data = response.json()
+    assert data["projectno"] == "alpha"
+    assert data["project"] == None
+    assert data["owner"] == None
+
+
+def test_put_project():
+    response = client.put(
+        "/project/alpha",
+        json={"project": "123"}
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["projectno"] == "alpha"
+    assert data["project"] == "123"
+
+
+def test_delete_project_not_found():
+    response = client.delete(
+        "/project/123",
+    )
+    assert response.status_code == 404
+    # response = client.get("/api/project")
+    # assert response.status_code == 200
+    # assert response.json() == []
+
+
+def test_delete_project():
+    response = client.delete(
+        "/project/alpha",
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["projectno"] == "alpha"
+    assert data["project"] == "123"
+
+

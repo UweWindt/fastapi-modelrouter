@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from sqlalchemy import create_engine, Column, String
+from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 
@@ -23,6 +23,14 @@ class Part(Base):
     partno = Column(String, primary_key=True)
     partname = Column(String)
     specification = Column(String)
+
+
+class Project(Base):
+    __tablename__ = 'project'
+    projectno = Column(String, primary_key=True)
+    project = Column(String)
+    state = Column(Integer, default=0)
+    owner = Column(String)
 
 
 Base.metadata.drop_all(bind=engine)
