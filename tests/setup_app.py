@@ -1,12 +1,7 @@
-
 from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-
-
-
-
-sqlalchemy_database_url = "sqlite:///test.db"
+sqlalchemy_database_url = "sqlite:///:memory"
 
 engine = create_engine(
     sqlalchemy_database_url, connect_args={"check_same_thread": False}
@@ -36,8 +31,8 @@ Base.metadata.create_all(bind=engine)
 
 
 def get_db():
+    db = session_local()
     try:
-        db = session_local()
         yield db
     finally:
         db.close()

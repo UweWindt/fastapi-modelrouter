@@ -36,8 +36,8 @@ class ModelRouter(APIRouter):
     ) -> None:
         """
 
-        :param db_model:
-        :param db:
+        :param db_model: SqlAlchemy model
+        :param db: function to get the db.session
         :param prefix:
         :param tags:
         :param get_all_route:
@@ -62,6 +62,8 @@ class ModelRouter(APIRouter):
                                                                name=db_model.__name__ + 'body',
                                                                exclude_pk=True)
 
+        prefix = prefix if prefix != "" else "/"+db_model.__name__.lower()
+        print(prefix)
         super().__init__(prefix=prefix, tags=tags, **kwargs)
 
         if get_all_route:
@@ -71,7 +73,7 @@ class ModelRouter(APIRouter):
                 methods=["GET"],
                 response_model=Optional[List[self.schema]],  # type: ignore
                 summary="Get All",
-                #dependencies=get_all_route,
+                # dependencies=get_all_route,
             )
 
         if get_one_route:
@@ -81,7 +83,7 @@ class ModelRouter(APIRouter):
                 methods=["GET"],
                 response_model=self.schema,
                 summary="Get One",
-                #dependencies=get_one_route,
+                # dependencies=get_one_route,
                 error_responses=[NOT_FOUND],
             )
 
@@ -92,7 +94,7 @@ class ModelRouter(APIRouter):
                 methods=["POST"],
                 response_model=self.schema,
                 summary="Create One",
-                #dependencies=create_route,
+                # dependencies=create_route,
             )
 
         if update_route:
@@ -102,7 +104,7 @@ class ModelRouter(APIRouter):
                 methods=["PUT"],
                 response_model=self.schema,
                 summary="Update One",
-                #dependencies=update_route,
+                # dependencies=update_route,
                 error_responses=[NOT_FOUND],
             )
 
@@ -113,7 +115,7 @@ class ModelRouter(APIRouter):
                 methods=["DELETE"],
                 response_model=self.schema,
                 summary="Delete One",
-                #dependencies=delete_one_route,
+                # dependencies=delete_one_route,
                 error_responses=[NOT_FOUND],
             )
 
