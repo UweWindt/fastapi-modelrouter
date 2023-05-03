@@ -2,6 +2,18 @@
 
 ## create fastAPI Router from a SqlAlchemy model
 
+
+### Usage
+
+```
+app = FastAPI()
+
+app.include_router(ModelRouter(Project, get_db, prefix="/project", ))
+
+```
+
+
+
 - autogenerate Pydantic Basemodels
 - Simple to Use
 - composite primary key
