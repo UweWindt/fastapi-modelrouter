@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='fastapi-modelrouter',
-    version='0.0.2',
+    version='0.1.0',
     license='MIT',
     description='FastAPI Router that creates CRUD routes for SqlAlchemy models',
     long_description=open("README.md").read(),

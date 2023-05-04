@@ -8,7 +8,8 @@
 - no need to write Pydantic Basemodels
 - keep SqlAlchemy Models and routes in sync
 - Simple to Use
-- Composite primary key
+- Supports composite primary keys
+- Supports queryparams
 
 
 ## Installation
@@ -19,7 +20,7 @@ pip install fastapi-modelrouter
 ## Basic Usage
 ```
 from fastapi import FastAPI
-from modelrouter.modelrouter import ModelRouter
+from modelrouter import ModelRouter
 
 # setup Sqlalchemy Database
 from sqlalchemy import create_engine, Column, String, Integer
