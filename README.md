@@ -10,7 +10,7 @@ pip install fastapi-modelrouter
 ### Basic Usage
 ```
 app = FastAPI()
-router=ModelRouter(Project, get_db, prefix="/project")
+router=ModelRouter(Project, get_db)
 app.include_router(router)
 ```
 
@@ -22,8 +22,4 @@ app.include_router(router)
 
 ### Under development
 
-### Todo's
-- modelrouter Tests
-- Example
-- Documentation
-- pip package
+
