@@ -1,16 +1,22 @@
+
+
+
+
 from setuptools import setup, find_packages
 
 setup(
     name='fastapi-modelrouter',
     version='0.0.2',
     license='MIT',
-    description='fastAPI CRUD-Router for SqlAlchemy models',
+    description='FastAPI Router that creates CRUD routes for SqlAlchemy models',
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
     author="Uwe Windt",
     author_email='uwe.windt@windisoft.de',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     url='https://github.com/UweWindt/fastapi-modelrouter',
-    keywords='fastapi router sqlalchemy',
+    keywords='fastapi router sqlalchemy development',
     classifiers=[
         # How mature is this project? Common values are
         #   3 - Alpha

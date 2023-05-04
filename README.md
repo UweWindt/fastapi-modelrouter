@@ -1,6 +1,6 @@
-# fastAPI-modelrouter
+# fastapi-modelrouter
 
-## create fastAPI CRUD route from SqlAlchemy model
+## FastAPI Router that creates CRUD routes for SqlAlchemy models
 
 ### Installation
 ```
