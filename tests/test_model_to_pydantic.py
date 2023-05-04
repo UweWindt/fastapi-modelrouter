@@ -2,7 +2,7 @@ from sqlalchemy import Column, String, create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.orm import declarative_base
 
-from modelrouter.model_to_pydantic import model_to_pydantic
+from src.modelrouter.model_to_pydantic import model_to_pydantic
 
 Base = declarative_base()
 

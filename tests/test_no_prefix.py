@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from modelrouter.modelrouter import ModelRouter
+from src.modelrouter.modelrouter import ModelRouter
 from .setup_app import Project, get_db
 
 app = FastAPI()
