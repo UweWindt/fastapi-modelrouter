@@ -9,9 +9,50 @@ pip install fastapi-modelrouter
 
 ### Basic Usage
 ```
+from fastapi import FastAPI
+from modelrouter.modelrouter import ModelRouter
+
+# setup Sqlalchemy Database
+from sqlalchemy import create_engine, Column, String, Integer
+from sqlalchemy.orm import sessionmaker, declarative_base
+
+sqlalchemy_database_url = "sqlite:///:memory"
+
+engine = create_engine(
+    sqlalchemy_database_url, connect_args={"check_same_thread": False}
+)
+session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base = declarative_base()
+
+
+# Define Project Model
+class Project(Base):
+    __tablename__ = 'project'
+    projectno = Column(String, primary_key=True)
+    project = Column(String)
+    state = Column(Integer, default=0)
+    owner = Column(String)
+
+
+Base.metadata.drop_all(bind=engine)
+Base.metadata.create_all(bind=engine)
+
+
+# Database session function
+def get_db():
+    db = session_local()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+# Create FastApi
 app = FastAPI()
-router=ModelRouter(Project, get_db)
-app.include_router(router)
+
+# Create and include Modelrouter 
+app.include_router(ModelRouter(Project, get_db))
 ```
 
 
