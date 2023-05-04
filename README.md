@@ -2,12 +2,21 @@
 
 ## FastAPI Router that creates CRUD routes for SqlAlchemy models
 
-### Installation
+### Features
+
+- Generates direct from SqlAlchemy Models CRUD routes
+- no need to write Pydantic Basemodels
+- keep SqlAlchemy Models and routes in sync
+- Simple to Use
+- Composite primary key
+
+
+## Installation
 ```
 pip install fastapi-modelrouter
 ```
 
-### Basic Usage
+## Basic Usage
 ```
 from fastapi import FastAPI
 from modelrouter.modelrouter import ModelRouter
@@ -57,10 +66,6 @@ app.include_router(ModelRouter(Project, get_db))
 
 
 
-- autogenerate Pydantic Basemodels
-- Simple to Use
-- composite primary key
 
-### Under development
 
 
