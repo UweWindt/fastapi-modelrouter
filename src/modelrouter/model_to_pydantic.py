@@ -55,9 +55,10 @@ def model_to_pydantic(
         if not force_optional:
             if column.default is None and not column.nullable:
                 default = ...
-
+            # else:
+            #     default = column.default
         if hasattr(column.type, "length") and column.type.length:
-            fields[column.name] = (python_type, FieldInfo(max_length=column.type.length,default = default))
+            fields[column.name] = (python_type, FieldInfo(max_length=column.type.length, default=default))
         else:
             fields[column.name] = (python_type, default)
     basemodel_name = name if name != '' else model.__name__

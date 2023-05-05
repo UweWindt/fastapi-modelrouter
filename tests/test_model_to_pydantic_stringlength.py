@@ -12,8 +12,8 @@ class String80(Base):
     __tablename__ = 'string80'
     pk = Column(String(70), primary_key=True)
     str80 = Column(String(80), primary_key=True)
-    simple = Column(String,  nullable=True,default="xxx")
-    num = Column(Integer, nullable=True, default=2)
+    simple = Column(String,  nullable=True)
+    num = Column(Integer, nullable=True)
 
 
 Base.metadata.drop_all(engine)
