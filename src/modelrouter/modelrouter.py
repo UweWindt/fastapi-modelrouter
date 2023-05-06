@@ -35,32 +35,35 @@ class ModelRouter(APIRouter):
             **kwargs: Any
     ) -> None:
         """
-
         :param db_model: SqlAlchemy model
-        :param db: function to get the db.session
-        :param prefix:
+        :param db: function to get the db session
+        :param prefix: prefix the pass string
         :param tags:
-        :param get_all_route:
-        :param get_one_route:
-        :param create_route:
-        :param update_route:
-        :param delete_one_route:
+        :param get_all_route: bool
+        :param get_one_route: bool
+        :param create_route: bool
+        :param update_route: bool
+        :param delete_one_route: bool
         :param kwargs:
         """
         self.db_model: Type[Model] = db_model
         self.db: CALLABLE_SESSION = db
         self.schema: Type[BaseModel] = model_to_pydantic(db_model)
-        self.queryparams_schema: Type[BaseModel] = model_to_pydantic(db_model,
-                                                                     name=db_model.__name__ + 'queryParams',
-                                                                     force_optional=True)
-        self.create_schema: Type[BaseModel] = model_to_pydantic(db_model,
-                                                                name=db_model.__name__ + '_Create')
-        self.pk_schema: Type[BaseModel] = model_to_pydantic(db_model,
-                                                            name=db_model.__name__ + '_Primary_Key',
-                                                            only_pk=True)
-        self.nonpk_schema: Type[BaseModel] = model_to_pydantic(db_model,
-                                                               name=db_model.__name__ + '_Body',
-                                                               exclude_pk=True)
+        self.queryparams_schema: Type[BaseModel] = \
+            model_to_pydantic(db_model,
+                              name=db_model.__name__ + 'queryParams',
+                              force_optional=True)
+        self.create_schema: Type[BaseModel] = \
+            model_to_pydantic(db_model,
+                              name=db_model.__name__ + '_Create')
+        self.pk_schema: Type[BaseModel] = \
+            model_to_pydantic(db_model,
+                              name=db_model.__name__ + '_Primary_Key',
+                              only_pk=True)
+        self.nonpk_schema: Type[BaseModel] = \
+            model_to_pydantic(db_model,
+                              name=db_model.__name__ + '_Body',
+                              exclude_pk=True)
 
         prefix = prefix if prefix != "" else "/" + db_model.__name__.lower()
         super().__init__(prefix=prefix, tags=tags, **kwargs)
