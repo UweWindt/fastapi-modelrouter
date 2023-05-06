@@ -63,7 +63,6 @@ class ModelRouter(APIRouter):
                                                                exclude_pk=True)
 
         prefix = prefix if prefix != "" else "/" + db_model.__name__.lower()
-        print(prefix)
         super().__init__(prefix=prefix, tags=tags, **kwargs)
 
         if get_all_route:
