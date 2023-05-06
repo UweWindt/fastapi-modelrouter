@@ -1,6 +1,7 @@
 from typing import Container, Optional, Type, Any
 
 from pydantic import BaseConfig, BaseModel, create_model
+from pydantic.fields import FieldInfo
 from sqlalchemy.inspection import inspect
 
 
@@ -54,7 +55,12 @@ def model_to_pydantic(
         if not force_optional:
             if column.default is None and not column.nullable:
                 default = ...
-        fields[column.name] = (python_type, default)
+            # else:
+            #     default = column.default
+        if hasattr(column.type, "length") and column.type.length:
+            fields[column.name] = (python_type, FieldInfo(max_length=column.type.length, default=default))
+        else:
+            fields[column.name] = (python_type, default)
     basemodel_name = name if name != '' else model.__name__
     basemodel: Type[BaseModel] = create_model(basemodel_name, __config__=OrmConfig, **fields)  # type: ignore
     return basemodel

@@ -11,6 +11,10 @@ app.include_router(ModelRouter(Project, get_db ))
 client = TestClient(app)
 
 def test_get_project():
+    """
+    when prefix is not set, the Model.__name__ shall be used
+    :return:
+    """
     response = client.get("/project")
     assert response.status_code == 200
     assert response.json() == []
