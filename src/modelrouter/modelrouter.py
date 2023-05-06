@@ -54,12 +54,12 @@ class ModelRouter(APIRouter):
                                                                      name=db_model.__name__ + 'queryParams',
                                                                      force_optional=True)
         self.create_schema: Type[BaseModel] = model_to_pydantic(db_model,
-                                                                name=db_model.__name__ + 'Create')
+                                                                name=db_model.__name__ + '_Create')
         self.pk_schema: Type[BaseModel] = model_to_pydantic(db_model,
-                                                            name=db_model.__name__ + 'Pk',
+                                                            name=db_model.__name__ + '_Primary_Key',
                                                             only_pk=True)
         self.nonpk_schema: Type[BaseModel] = model_to_pydantic(db_model,
-                                                               name=db_model.__name__ + 'body',
+                                                               name=db_model.__name__ + '_Body',
                                                                exclude_pk=True)
 
         prefix = prefix if prefix != "" else "/" + db_model.__name__.lower()
