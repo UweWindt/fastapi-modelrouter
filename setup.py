@@ -1,8 +1,19 @@
+from distutils.util import convert_path
+
 from setuptools import setup, find_packages
+
+
+def get_version():
+    ver_path = convert_path("src/_version.py")
+    with open(ver_path) as ver_file:
+        main_ns = {}
+        exec(ver_file.read(), main_ns)
+        return main_ns["__version__"]
+
 
 setup(
     name='fastapi-modelrouter',
-    version='0.1.1',
+    version=get_version(),
     license='MIT',
     description='FastAPI Router that creates CRUD routes for SqlAlchemy models',
     long_description=open("README.md").read(),
