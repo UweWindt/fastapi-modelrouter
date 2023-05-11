@@ -10,6 +10,7 @@
 - Simple to Use
 - Supports composite primary keys
 - Supports queryparams
+- Support fixed length String fields e.g. String(20)
 
 
 ## Installation
